@@ -271,6 +271,32 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 		state.activeTexture( _gl.TEXTURE0 + slot );
 		state.bindTexture( _gl.TEXTURE_2D, textureProperties.__webglTexture );
 
+  }
+
+  function setTexture3D( texture, slot ) {
+
+		var textureProperties = properties.get( texture );
+
+		if ( texture.version > 0 && textureProperties.__version !== texture.version ) {
+
+			var image = texture.image;
+
+			if ( image === undefined ) {
+
+				console.warn( 'THREE.WebGLRenderer: Texture3D marked for update but image is undefined', texture );
+
+			} else {
+
+				uploadTexture3D( textureProperties, texture, slot );
+				return;
+
+			}
+
+		}
+
+		state.activeTexture( _gl.TEXTURE0 + slot );
+		state.bindTexture( _gl.TEXTURE_3D, textureProperties.__webglTexture );
+
 	}
 
 	function setTextureCube( texture, slot ) {
@@ -457,6 +483,81 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 			}
 
 		}
+
+  }
+
+  function uploadTexture3D( textureProperties, texture, slot ) {
+
+		if ( textureProperties.__webglInit === undefined ) {
+
+			textureProperties.__webglInit = true;
+
+			texture.addEventListener( 'dispose', onTextureDispose );
+
+			textureProperties.__webglTexture = _gl.createTexture();
+
+			info.memory.textures ++;
+
+		}
+
+		state.activeTexture( _gl.TEXTURE0 + slot );
+		state.bindTexture( _gl.TEXTURE_3D, textureProperties.__webglTexture );
+
+		_gl.pixelStorei( _gl.UNPACK_FLIP_Y_WEBGL, texture.flipY );
+		_gl.pixelStorei( _gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, texture.premultiplyAlpha );
+		_gl.pixelStorei( _gl.UNPACK_ALIGNMENT, texture.unpackAlignment );
+
+    let image = texture.image;
+
+    let isPowerOfTwoImage = true;
+
+		var glInternalFormat = utils.convert( texture.internalFormat );
+		var glFormat = utils.convert( texture.format );
+		var glType = utils.convert( texture.type );
+
+    texture.minFilter = NearestFilter;
+    texture.magFilter = NearestFilter;
+
+    _gl.texParameteri(_gl.TEXTURE_3D, _gl.TEXTURE_BASE_LEVEL, 0);
+    _gl.texParameteri(_gl.TEXTURE_3D, _gl.TEXTURE_MAX_LEVEL, Math.log2(image.width));
+
+    _gl.texParameteri( _gl.TEXTURE_3D, _gl.TEXTURE_WRAP_S, utils.convert( texture.wrapS ) );
+    _gl.texParameteri( _gl.TEXTURE_3D, _gl.TEXTURE_WRAP_T, utils.convert( texture.wrapT ) );
+    _gl.texParameteri( _gl.TEXTURE_3D, _gl.TEXTURE_MAG_FILTER, utils.convert( texture.magFilter ) );
+    _gl.texParameteri( _gl.TEXTURE_3D, _gl.TEXTURE_MIN_FILTER, utils.convert( texture.minFilter ) );
+
+		var mipmap, mipmaps = texture.mipmaps;
+
+    if ( mipmaps.length > 0 ) {
+
+      for ( var i = 0, il = mipmaps.length; i < il; i ++ ) {
+
+        mipmap = mipmaps[ i ];
+        state.texImage3D( _gl.TEXTURE_3D, i, glInternalFormat, mipmap.width, mipmap.height,
+          mipmap.depth, 0, glFormat, glType, mipmap.data );
+      }
+
+      texture.generateMipmaps = false;
+      textureProperties.__maxMipLevel = mipmaps.length - 1;
+
+    } else {
+
+      state.texImage3D( _gl.TEXTURE_3D, 0, glInternalFormat, image.width, image.height,
+          image.depth, 0, glFormat, glType, image.data );
+
+      textureProperties.__maxMipLevel = 0;
+
+    }
+
+    if ( textureNeedsGenerateMipmaps( texture, isPowerOfTwoImage ) ) {
+
+			generateMipmap( _gl.TEXTURE_3D, texture, image.width, image.height );
+
+		}
+
+		textureProperties.__version = texture.version;
+
+		if ( texture.onUpdate ) texture.onUpdate( texture );
 
 	}
 
@@ -890,7 +991,8 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 	}
 
 	this.setTexture2D = setTexture2D;
-	this.setTextureCube = setTextureCube;
+  this.setTextureCube = setTextureCube;
+  this.setTexture3D = setTexture3D;
 	this.setTextureCubeDynamic = setTextureCubeDynamic;
 	this.setupRenderTarget = setupRenderTarget;
 	this.updateRenderTargetMipmap = updateRenderTargetMipmap;
