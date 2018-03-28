@@ -84,14 +84,35 @@ export var UnsignedShort4444Type = 1017;
 export var UnsignedShort5551Type = 1018;
 export var UnsignedShort565Type = 1019;
 export var UnsignedInt248Type = 1020;
+
 export var AlphaFormat = 1021;
 export var RGBFormat = 1022;
 export var RGBAFormat = 1023;
+
 export var LuminanceFormat = 1024;
 export var LuminanceAlphaFormat = 1025;
 export var RGBEFormat = RGBAFormat;
 export var DepthFormat = 1026;
 export var DepthStencilFormat = 1027;
+
+export var RedFormat = 1028;
+export var R8Format = 1029;
+export var R16FFormat = 1030;
+export var R32FFormat = 1031;
+
+export var RGFormat = 1032;
+export var RG8Format = 1033;
+export var RG16FFormat = 1034;
+export var RG32FFormat = 1035;
+
+export var RGB8Format = 1036;
+export var RGB16FFormat = 1037;
+export var RGB32FFormat = 1038;
+
+export var RGBA8Format = 1039;
+export var RGBA16FFormat = 1040;
+export var RGBA32FFormat = 1041;
+
 export var RGB_S3TC_DXT1_Format = 33776;
 export var RGBA_S3TC_DXT1_Format = 33777;
 export var RGBA_S3TC_DXT3_Format = 33778;

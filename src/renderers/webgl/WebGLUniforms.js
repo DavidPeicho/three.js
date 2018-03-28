@@ -246,6 +246,14 @@ function setValueT1( gl, v, renderer ) {
 
 }
 
+function setValueT3( gl, v, renderer ) {
+
+  var unit = renderer.allocTextureUnit();
+  gl.uniform1i( this.addr, unit );
+  renderer.setTexture3D( v || emptyTexture, unit );
+
+}
+
 function setValueT6( gl, v, renderer ) {
 
 	var unit = renderer.allocTextureUnit();
@@ -253,6 +261,7 @@ function setValueT6( gl, v, renderer ) {
 	renderer.setTextureCube( v || emptyCubeTexture, unit );
 
 }
+
 
 // Integer / Boolean vectors or arrays thereof (always flat arrays)
 
@@ -289,7 +298,8 @@ function getSingularSetter( type ) {
 		case 0x8b5b: return setValue3fm; // _MAT3
 		case 0x8b5c: return setValue4fm; // _MAT4
 
-		case 0x8b5e: case 0x8d66: return setValueT1; // SAMPLER_2D, SAMPLER_EXTERNAL_OES
+    case 0x8b5e: case 0x8d66: return setValueT1; // SAMPLER_2D, SAMPLER_EXTERNAL_OES
+    case 0x8b5f: return setValueT3; // SAMPLER_3D
 		case 0x8b60: return setValueT6; // SAMPLER_CUBE
 
 		case 0x1404: case 0x8b56: return setValue1i; // INT, BOOL
@@ -371,6 +381,21 @@ function setValueT1a( gl, v, renderer ) {
 
 }
 
+function setValueT3a( gl, v, renderer ) {
+
+	var n = v.length;
+	var units = allocTexUnits( renderer, n );
+
+	gl.uniform1iv( this.addr, units );
+
+	for ( var i = 0; i !== n; ++ i ) {
+
+		renderer.setTexture3D( v[ i ] || emptyTexture, units[ i ] );
+
+	}
+
+}
+
 function setValueT6a( gl, v, renderer ) {
 
 	var n = v.length,
@@ -402,6 +427,7 @@ function getPureArraySetter( type ) {
 		case 0x8b5c: return setValueM4a; // _MAT4
 
 		case 0x8b5e: return setValueT1a; // SAMPLER_2D
+		case 0x8b5f: return setValueT3a; // SAMPLER_3D
 		case 0x8b60: return setValueT6a; // SAMPLER_CUBE
 
 		case 0x1404: case 0x8b56: return setValue1iv; // INT, BOOL

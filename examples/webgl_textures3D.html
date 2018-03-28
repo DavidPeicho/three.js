@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>three.js webgl - materials - cube reflection [balls]</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        body {
+            background: #777;
+            padding: 0;
+            margin: 0;
+            font-weight: bold;
+            overflow: hidden;
+        }
+
+        #info {
+            position: absolute;
+            top: 0px;
+            width: 100%;
+            color: #ffffff;
+            padding: 5px;
+            font-family: Monospace;
+            font-size: 13px;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        a {
+            color: #ffffff;
+        }
+
+        #oldie a {
+            color: #da0
+        }
+    </style>
+</head>
+
+<body>
+    <div id="info">
+        <a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> - webgl cube reflection demo. skybox by
+        <a href="http://ict.debevec.org/~debevec/" target="_blank" rel="noopener">Paul Debevec</a>
+    </div>
+
+    <script src="../build/three.js"></script>
+
+    <script src="js/Detector.js"></script>
+
+    <script>
+
+        const vx = `#version 300 es
+
+            in vec3 position;
+
+            void main() {
+                gl_Position = vec4(position, 1.0);
+            }
+        `;
+
+        const fsRGB8 = `#version 300 es
+
+            precision mediump float;
+            precision mediump sampler3D;
+
+            uniform float uDepth;
+            uniform float uGTime;
+            uniform sampler3D uTexture;
+
+            out vec4 FragColor;
+
+            void main() {
+                vec3 fetch = vec3(0.0, 0.0, 1.0 / 32.0);
+                vec3 color = textureLod(uTexture, fetch, 0.0).rgb;
+                FragColor = vec4(color, 1.0);
+            }
+        `;
+
+        const fsRGBAFloat = `#version 300 es
+
+            precision mediump float;
+            precision mediump sampler3D;
+
+            uniform float uDepth;
+            uniform float uGTime;
+            uniform sampler3D uTexture;
+
+            out vec4 FragColor;
+
+            void main() {
+                vec3 fetch = vec3(0.0, 0.0, mod(uGTime, uDepth));
+                vec4 color = textureLod(uTexture, fetch, 0.0);
+                vec4 colorPremult = vec4(color.rgb * color.a, 1.0);
+                FragColor = colorPremult;
+            }
+        `;
+
+        const fsR = `#version 300 es
+
+            precision mediump float;
+            precision mediump sampler3D;
+
+            uniform float uDepth;
+            uniform float uGTime;
+            uniform sampler3D uTexture;
+
+            out vec4 FragColor;
+
+            void main() {
+                vec3 fetch = vec3(0.0, 0.0, mod(uGTime, uDepth));
+                float color = textureLod(uTexture, fetch, 0.0).r;
+                FragColor = vec4(color, color, color, 1.0);
+            }
+        `;
+
+        if (!Detector.webgl) Detector.addGetWebGLMessage();
+
+        var fragShaders = [fsRGBAFloat, fsRGB8, fsR, fsR, fsR];
+
+        var container;
+
+        var camera, scene, quad, renderer;
+
+        var mesh, lightMesh, geometry;
+        var spheres = [];
+
+        var directionalLight, pointLight;
+
+        var mouseX = 0;
+        var mouseY = 0;
+
+        var windowHalfX = window.innerWidth / 2;
+        var windowHalfY = window.innerHeight / 2;
+
+        var clock = new THREE.Clock();
+        var delta = 0.0;
+
+        var materials = null;
+
+        var currMat = 0;
+
+        init();
+        listeners();
+        animate();
+
+        function init() {
+
+            container = document.createElement('div');
+            document.body.appendChild(container);
+
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000000);
+            camera = new THREE.OrthographicCamera(- 1, 1, 1, - 1, 0, 1);
+
+            materials = buildMaterials();
+
+            quad = new THREE.Mesh(
+                new THREE.PlaneBufferGeometry(2, 2),
+                materials[currMat]
+            );
+            quad.frustumCulled = false;
+            scene.add(quad);
+
+            renderer = new THREE.WebGLRenderer();
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            window.addEventListener('resize', onWindowResize, false);
+
+        }
+
+        function listeners() {
+
+            document.addEventListener('keydown', (event) => {
+
+                if (event.keyCode === 32) {
+                    currMat = (currMat + 1) % materials.length;
+
+                    quad.material = materials[currMat];
+                    quad.material.needsUpdate = true;
+
+                }
+
+            });
+
+        }
+
+        function onWindowResize() {
+
+            windowHalfX = window.innerWidth / 2;
+            windowHalfY = window.innerHeight / 2;
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+        }
+
+        function animate() {
+
+            requestAnimationFrame(animate);
+
+            render();
+
+        }
+
+        function render() {
+
+            delta += clock.getDelta();
+
+            const mat = materials[currMat];
+            mat.uniforms.uGTime.value = delta;
+
+            renderer.setClearColor(0x000000, 1.0);
+
+            renderer.render(scene, camera);
+
+        }
+
+        function buildMaterials() {
+
+            const VOL_SIZE = 32;
+
+            let rgba32 = new Float32Array(VOL_SIZE * VOL_SIZE * VOL_SIZE * 4);
+            fillSquareArray(rgba32, VOL_SIZE, (i, depth) => {
+
+                rgba32[i * 4] = 1.0;
+                rgba32[i * 4 + 1] = 1.0;
+                rgba32[i * 4 + 2] = 1.0;
+                rgba32[i * 4 + 3] = (depth / VOL_SIZE);
+
+            });
+
+            let rgb8 = new Uint8Array(VOL_SIZE * VOL_SIZE * VOL_SIZE * 3);
+            fillSquareArray(rgb8, VOL_SIZE, (i, depth) => {
+
+                if (depth % 2 === 0) {
+                    rgb8[i * 3] = 255;
+                    rgb8[i * 3 + 1] = 255;
+                    rgb8[i * 3 + 2] = 0;
+                } else {
+                    rgb8[i * 3] = 0;
+                    rgb8[i * 3 + 1] = 0;
+                    rgb8[i * 3 + 2] = 255;
+                }
+
+            });
+
+            let r32 = new Float32Array(VOL_SIZE * VOL_SIZE * VOL_SIZE);
+            fillSquareArray(r32, VOL_SIZE, (i, depth) => {
+
+                r32[i] = 0.8;
+
+            });
+
+            let r8 = new Uint8Array(VOL_SIZE * VOL_SIZE * VOL_SIZE);
+            fillSquareArray(r8, VOL_SIZE, (i, depth) => {
+
+                r8[i] = 200;
+
+            });
+
+            let r8NS = new Uint8Array(VOL_SIZE * 2 * VOL_SIZE * VOL_SIZE);
+            fillArray(r8NS, VOL_SIZE * 2, VOL_SIZE, VOL_SIZE, (i, depth) => {
+
+                r8NS[i] = 200;
+
+            });
+
+            let rgbaTex = new THREE.Texture3D(
+                rgba32, VOL_SIZE, VOL_SIZE, VOL_SIZE,
+                undefined, undefined, undefined, undefined, undefined,
+                THREE.RGBA32FFormat, THREE.RGBAFormat, THREE.FloatType
+            );
+
+            let rgbTex = new THREE.Texture3D(
+                rgb8, VOL_SIZE, VOL_SIZE, VOL_SIZE,
+                undefined, undefined, undefined, undefined, undefined,
+                THREE.RGB8Format, THREE.RGBFormat
+            );
+
+            let rTex = new THREE.Texture3D(
+                r32, VOL_SIZE, VOL_SIZE, VOL_SIZE,
+                undefined, undefined, undefined, undefined, undefined,
+                THREE.R32FFormat, THREE.RedFormat, THREE.FloatType
+            );
+
+            let r8Tex = new THREE.Texture3D(
+                r8, VOL_SIZE, VOL_SIZE, VOL_SIZE,
+                undefined, undefined, undefined, undefined, undefined,
+                THREE.R8Format, THREE.RedFormat
+            );
+
+            // Hardcode a specific non-squared texture
+            let r8NSTex = new THREE.Texture3D(
+                r8NS, VOL_SIZE * 2, VOL_SIZE, VOL_SIZE,
+                undefined, undefined, undefined, undefined, undefined,
+                THREE.R8Format, THREE.RedFormat
+            );
+
+            const textureArr = [rgbaTex, rgbTex, rTex, r8Tex, r8NSTex];
+
+            let materials = [];
+            for (let i = 0; i < textureArr.length; ++i) {
+
+                const tex = textureArr[i];
+                tex.needsUpdate = true;
+
+                materials[i] = new THREE.RawShaderMaterial({
+                    vertexShader: vx,
+                    fragmentShader: fragShaders[i],
+                    uniforms: {
+                        uTexture: { value: tex },
+                        uDepth: { value: VOL_SIZE },
+                        uGTime: { value: 0.0 },
+                    }
+                });
+
+            }
+
+            return materials;
+
+        }
+
+        function fillSquareArray(arr, size, fillFunc) {
+
+            fillArray(arr, size, size, size, fillFunc);
+
+        }
+
+        function fillArray(arr, w, h, d, fillFunc) {
+            for (let z = 0; z < w; ++z)
+                for (let y = 0; y < h; ++y)
+                    for (let x = 0; x < d; ++x) {
+                        const i = y * w + x;
+                        const j = z * d * d;
+                        const idx = i + j;
+                        fillFunc(idx, z);
+                    }
+        }
+
+    </script>
+
+</body>
+
+</html>
