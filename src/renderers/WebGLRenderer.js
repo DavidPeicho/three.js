@@ -200,11 +200,15 @@ function WebGLRenderer( parameters ) {
 		_canvas.addEventListener( 'webglcontextlost', onContextLost, false );
 		_canvas.addEventListener( 'webglcontextrestored', onContextRestore, false );
 
-		_gl = _context || _canvas.getContext( 'webgl2', contextAttributes ) || _canvas.getContext( 'experimental-webgl', contextAttributes );
+		// The users can request either WebGL1 or WebGL2.
+		let webglVersion = 'webgl';
+		if ( parameters.webGL2 ) webglVersion += '2';
+
+		_gl = _context || _canvas.getContext( webglVersion, contextAttributes ) || _canvas.getContext( 'experimental-webgl', contextAttributes );
 
 		if ( _gl === null ) {
 
-			if ( _canvas.getContext( 'webgl2' ) !== null ) {
+			if ( _canvas.getContext( webglVersion ) !== null ) {
 
 				throw new Error( 'Error creating WebGL context with your selected attributes.' );
 
@@ -2396,9 +2400,9 @@ function WebGLRenderer( parameters ) {
 
 		};
 
-  }() );
+	}() );
 
-  this.setTexture3D = ( function () {
+	this.setTexture3D = ( function () {
 
 		return function setTexture( texture, slot ) {
 
@@ -2467,7 +2471,7 @@ function WebGLRenderer( parameters ) {
 
 		};
 
-  }() );
+	}() );
 
 
 
