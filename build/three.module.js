@@ -14917,10 +14917,6 @@ function WebGLExtensions( gl ) {
 					extension = gl.getExtension( 'WEBGL_compressed_texture_pvrtc' ) || gl.getExtension( 'WEBKIT_WEBGL_compressed_texture_pvrtc' );
 					break;
 
-				case 'WEBGL_compressed_texture_etc1':
-					extension = gl.getExtension( 'WEBGL_compressed_texture_etc1' );
-					break;
-
 				default:
 					extension = gl.getExtension( name );
 
@@ -20183,9 +20179,6 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 		// Backward compatibility with WebGL1
 		if ( ! _isWebGL2 )
 			glInternalFormat = glFormat;
-
-		texture.minFilter = NearestFilter;
-		texture.magFilter = NearestFilter;
 
 		_gl.texParameteri( _gl.TEXTURE_3D, _gl.TEXTURE_BASE_LEVEL, 0 );
 		_gl.texParameteri( _gl.TEXTURE_3D, _gl.TEXTURE_MAX_LEVEL, Math.log2( image.width ) );
@@ -38706,7 +38699,7 @@ AudioListener.prototype = Object.assign( Object.create( Object3D.prototype ), {
 
 	setMasterVolume: function ( value ) {
 
-		this.gain.gain.value = value;
+		this.gain.gain.setTargetAtTime( value, this.context.currentTime, 0.01 );
 
 	},
 
@@ -39049,7 +39042,7 @@ Audio.prototype = Object.assign( Object.create( Object3D.prototype ), {
 
 	setVolume: function ( value ) {
 
-		this.gain.gain.value = value;
+		this.gain.gain.setTargetAtTime( value, this.context.currentTime, 0.01 );
 
 		return this;
 

@@ -518,9 +518,6 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 		var glFormat = utils.convert( texture.format );
 		var glInternalFormat = utils.convert( texture.internalFormat );
 
-		texture.minFilter = NearestFilter;
-		texture.magFilter = NearestFilter;
-
 		_gl.texParameteri( _gl.TEXTURE_3D, _gl.TEXTURE_BASE_LEVEL, 0 );
 		_gl.texParameteri( _gl.TEXTURE_3D, _gl.TEXTURE_MAX_LEVEL, Math.log2( image.width ) );
 
