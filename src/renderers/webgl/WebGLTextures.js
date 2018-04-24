@@ -350,6 +350,8 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 			      glInternalFormat = glFormat;
 				//glInternalFormat = getInternalFormat( glFormat, glType );
 
+				const glInternalFormat = utils.convert( texture.internalFormat );
+
 				setTextureParameters( _gl.TEXTURE_CUBE_MAP, texture, isPowerOfTwoImage );
 
 				for ( var i = 0; i < 6; i ++ ) {
