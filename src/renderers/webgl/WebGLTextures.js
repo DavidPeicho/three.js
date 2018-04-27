@@ -525,6 +525,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 		_gl.texParameteri( _gl.TEXTURE_3D, _gl.TEXTURE_WRAP_S, utils.convert( texture.wrapS ) );
 		_gl.texParameteri( _gl.TEXTURE_3D, _gl.TEXTURE_WRAP_T, utils.convert( texture.wrapT ) );
+		_gl.texParameteri( _gl.TEXTURE_3D, _gl.TEXTURE_WRAP_R, utils.convert( texture.wrapR ) );
 		_gl.texParameteri( _gl.TEXTURE_3D, _gl.TEXTURE_MAG_FILTER, utils.convert( texture.magFilter ) );
 		_gl.texParameteri( _gl.TEXTURE_3D, _gl.TEXTURE_MIN_FILTER, utils.convert( texture.minFilter ) );
 
