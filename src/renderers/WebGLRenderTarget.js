@@ -29,6 +29,8 @@ function WebGLRenderTarget( width, height, options ) {
 	if ( options.minFilter === undefined ) options.minFilter = LinearFilter;
 
 	this.texture = new Texture( undefined, undefined, options.wrapS, options.wrapT, options.magFilter, options.minFilter, options.format, options.type, options.anisotropy, options.encoding );
+	if ( options.internalFormat )
+		this.texture.internalFormat = options.internalFormat;
 
 	this.texture.generateMipmaps = options.generateMipmaps !== undefined ? options.generateMipmaps : true;
 

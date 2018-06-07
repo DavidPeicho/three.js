@@ -350,8 +350,6 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 			      glInternalFormat = glFormat;
 				//glInternalFormat = getInternalFormat( glFormat, glType );
 
-				const glInternalFormat = utils.convert( texture.internalFormat );
-
 				setTextureParameters( _gl.TEXTURE_CUBE_MAP, texture, isPowerOfTwoImage );
 
 				for ( var i = 0; i < 6; i ++ ) {
@@ -762,12 +760,12 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 	// Setup storage for target texture and bind it to correct framebuffer
 	function setupFrameBufferTexture( framebuffer, renderTarget, attachment, textureTarget ) {
 
-		var glFormat = utils.convert( renderTarget.texture.format );
 		var glType = utils.convert( renderTarget.texture.type );
+		var glFormat = utils.convert( renderTarget.texture.format );
 		var glInternalFormat = utils.convert( renderTarget.texture.internalFormat );
-		if ( ! capabilities._isWebGL2 )
+		if ( ! capabilities.isWebGL2 )
 			glInternalFormat = glFormat;
-		//var glInternalFormat = getInternalFormat( glFormat, glType );
+
 		state.texImage2D( textureTarget, 0, glInternalFormat, renderTarget.width, renderTarget.height, 0, glFormat, glType, null );
 		_gl.bindFramebuffer( _gl.FRAMEBUFFER, framebuffer );
 		_gl.framebufferTexture2D( _gl.FRAMEBUFFER, attachment, textureTarget, properties.get( renderTarget.texture ).__webglTexture, 0 );
