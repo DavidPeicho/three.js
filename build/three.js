@@ -283,22 +283,33 @@
 	var DepthStencilFormat = 1027;
 
 	var RedFormat = 1028;
-	var R8Format = 1029;
-	var R16FFormat = 1030;
-	var R32FFormat = 1031;
+	var RedIntegerFormat = 1029;
 
-	var RGFormat = 1032;
-	var RG8Format = 1033;
-	var RG16FFormat = 1034;
-	var RG32FFormat = 1035;
+	var R8Format = 1030;
+	var R8UIFormat = 1031;
+	var R16FFormat = 1032;
+	var R32FFormat = 1033;
 
-	var RGB8Format = 1036;
-	var RGB16FFormat = 1037;
-	var RGB32FFormat = 1038;
+	var RGFormat = 1034;
+	var RGIntegerFormat = 1035;
 
-	var RGBA8Format = 1039;
-	var RGBA16FFormat = 1040;
-	var RGBA32FFormat = 1041;
+	var RGBIntegerFormat = 1036;
+	var RGBAIntegerFormat = 1037;
+
+	var RG8Format = 1038;
+	var RG8UIFormat = 1039;
+	var RG16FFormat = 1040;
+	var RG32FFormat = 1041;
+
+	var RGB8Format = 1042;
+	var RGB8UIFormat = 1042;
+	var RGB16FFormat = 1043;
+	var RGB32FFormat = 1044;
+
+	var RGBA8Format = 1045;
+	var RGBA8UIFormat = 1046;
+	var RGBA16FFormat = 1047;
+	var RGBA32FFormat = 1048;
 
 	var RGB_S3TC_DXT1_Format = 33776;
 	var RGBA_S3TC_DXT1_Format = 33777;
@@ -15715,9 +15726,9 @@
 
 	function setValueT3( gl, v, renderer ) {
 
-	  var unit = renderer.allocTextureUnit();
-	  gl.uniform1i( this.addr, unit );
-	  renderer.setTexture3D( v || emptyTexture, unit );
+		var unit = renderer.allocTextureUnit();
+		gl.uniform1i( this.addr, unit );
+		renderer.setTexture3D( v || emptyTexture, unit );
 
 	}
 
@@ -15765,8 +15776,9 @@
 			case 0x8b5b: return setValue3fm; // _MAT3
 			case 0x8b5c: return setValue4fm; // _MAT4
 
-	    case 0x8b5e: case 0x8d66: return setValueT1; // SAMPLER_2D, SAMPLER_EXTERNAL_OES
-	    case 0x8b5f: return setValueT3; // SAMPLER_3D
+			case 0x8b5e: case 0x8d66: case 0x8DD2: case 0x8DD3: case 0x8DD4: case 0x8DD7: return setValueT1; // SAMPLER_2D, SAMPLER_EXTERNAL_OES
+
+			case 0x8b5f: return setValueT3; // SAMPLER_3D
 			case 0x8b60: return setValueT6; // SAMPLER_CUBE
 
 			case 0x1404: case 0x8b56: return setValue1i; // INT, BOOL
@@ -20728,22 +20740,35 @@
 			if ( p === AlphaFormat ) return gl.ALPHA;
 
 			if ( p === RedFormat ) return gl.RED;
+			if ( p === RedIntegerFormat ) return gl.RED_INTEGER;
+
+
 			if ( p === R8Format ) return gl.R8;
+			if ( p === R8UIFormat ) return gl.R8UI;
 			if ( p === R16FFormat ) return gl.R16F;
 			if ( p === R32FFormat ) return gl.R32F;
 
 			if ( p === RGFormat ) return gl.RG;
+			if ( p === RGIntegerFormat ) return gl.RG_INTEGER;
+
 			if ( p === RG8Format ) return gl.RG8;
+			if ( p === RG8UIFormat ) return gl.RG8UI;
 			if ( p === RG16FFormat ) return gl.RG16F;
 			if ( p === RG32FFormat ) return gl.RG32F;
 
 			if ( p === RGBFormat ) return gl.RGB;
+			if ( p === RGBIntegerFormat ) return gl.RGB_INTEGER;
+
 			if ( p === RGB8Format ) return gl.RGB8;
+			if ( p === RGB8UIFormat ) return gl.RGB8UI;
 			if ( p === RGB16FFormat ) return gl.RGB16F;
 			if ( p === RGB32FFormat ) return gl.RGB32F;
 
 			if ( p === RGBAFormat ) return gl.RGBA;
+			if ( p === RGBAIntegerFormat ) return gl.RGBA_INTEGER;
+
 			if ( p === RGBA8Format ) return gl.RGBA8;
+			if ( p === RGBA8UIFormat ) return gl.RGBA8UI;
 			if ( p === RGBA16FFormat ) return gl.RGBA16F;
 			if ( p === RGBA32FFormat ) return gl.RGBA32F;
 
@@ -46447,17 +46472,25 @@
 	exports.DepthFormat = DepthFormat;
 	exports.DepthStencilFormat = DepthStencilFormat;
 	exports.RedFormat = RedFormat;
+	exports.RedIntegerFormat = RedIntegerFormat;
 	exports.R8Format = R8Format;
+	exports.R8UIFormat = R8UIFormat;
 	exports.R16FFormat = R16FFormat;
 	exports.R32FFormat = R32FFormat;
 	exports.RGFormat = RGFormat;
+	exports.RGIntegerFormat = RGIntegerFormat;
+	exports.RGBIntegerFormat = RGBIntegerFormat;
+	exports.RGBAIntegerFormat = RGBAIntegerFormat;
 	exports.RG8Format = RG8Format;
+	exports.RG8UIFormat = RG8UIFormat;
 	exports.RG16FFormat = RG16FFormat;
 	exports.RG32FFormat = RG32FFormat;
 	exports.RGB8Format = RGB8Format;
+	exports.RGB8UIFormat = RGB8UIFormat;
 	exports.RGB16FFormat = RGB16FFormat;
 	exports.RGB32FFormat = RGB32FFormat;
 	exports.RGBA8Format = RGBA8Format;
+	exports.RGBA8UIFormat = RGBA8UIFormat;
 	exports.RGBA16FFormat = RGBA16FFormat;
 	exports.RGBA32FFormat = RGBA32FFormat;
 	exports.RGB_S3TC_DXT1_Format = RGB_S3TC_DXT1_Format;

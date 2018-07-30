@@ -390,9 +390,9 @@ function setValueT1( gl, v, renderer ) {
 
 function setValueT3( gl, v, renderer ) {
 
-  var unit = renderer.allocTextureUnit();
-  gl.uniform1i( this.addr, unit );
-  renderer.setTexture3D( v || emptyTexture, unit );
+	var unit = renderer.allocTextureUnit();
+	gl.uniform1i( this.addr, unit );
+	renderer.setTexture3D( v || emptyTexture, unit );
 
 }
 
@@ -466,8 +466,9 @@ function getSingularSetter( type ) {
 		case 0x8b5b: return setValue3fm; // _MAT3
 		case 0x8b5c: return setValue4fm; // _MAT4
 
-    case 0x8b5e: case 0x8d66: return setValueT1; // SAMPLER_2D, SAMPLER_EXTERNAL_OES
-    case 0x8b5f: return setValueT3; // SAMPLER_3D
+		case 0x8b5e: case 0x8d66: case 0x8DD2: case 0x8DD3: case 0x8DD4: case 0x8DD7: return setValueT1; // SAMPLER_2D, SAMPLER_EXTERNAL_OES
+
+		case 0x8b5f: return setValueT3; // SAMPLER_3D
 		case 0x8b60: return setValueT6; // SAMPLER_CUBE
 
 		case 0x1404: case 0x8b56: return setValue1i; // INT, BOOL

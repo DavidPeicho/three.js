@@ -17,10 +17,14 @@ import {
 	SrcAlphaFactor, OneMinusSrcColorFactor, SrcColorFactor, OneFactor, ZeroFactor,
 	ReverseSubtractEquation, SubtractEquation, AddEquation, DepthFormat,
 	DepthStencilFormat, LuminanceAlphaFormat, LuminanceFormat,
-	RGBAFormat, RGBFormat, AlphaFormat, RedFormat, R16FFormat, R8Format, R32FFormat,
-	RGFormat, RG8Format, RG16FFormat, RG32FFormat, RGB8Format, RGB16FFormat,
-	RGB32FFormat, RGBA8Format, RGBA16FFormat, RGBA32FFormat, HalfFloatType, FloatType,
-	UnsignedIntType, IntType, UnsignedShortType, ShortType, ByteType,
+	RGBAFormat, RGBAIntegerFormat, RGBFormat, RGBIntegerFormat,
+	AlphaFormat, RedFormat, RedIntegerFormat,
+	R16FFormat, R8Format, R8UIFormat, R32FFormat, RGFormat, RGIntegerFormat,
+	RG8Format, RG8UIFormat, RG16FFormat, RG32FFormat,
+	RGB8Format, RGB8UIFormat, RGB16FFormat, RGB32FFormat,
+	RGBA8Format, RGBA8UIFormat, RGBA16FFormat, RGBA32FFormat,
+	HalfFloatType, FloatType, UnsignedIntType,
+	IntType, UnsignedShortType, ShortType, ByteType,
 	UnsignedInt248Type, UnsignedShort565Type, UnsignedShort5551Type,
 	UnsignedShort4444Type, UnsignedByteType, LinearMipMapLinearFilter,
 	LinearMipMapNearestFilter, LinearFilter, NearestMipMapLinearFilter,
@@ -71,22 +75,35 @@ function WebGLUtils( gl, extensions, capabilities ) {
 		if ( p === AlphaFormat ) return gl.ALPHA;
 
 		if ( p === RedFormat ) return gl.RED;
+		if ( p === RedIntegerFormat ) return gl.RED_INTEGER;
+
+
 		if ( p === R8Format ) return gl.R8;
+		if ( p === R8UIFormat ) return gl.R8UI;
 		if ( p === R16FFormat ) return gl.R16F;
 		if ( p === R32FFormat ) return gl.R32F;
 
 		if ( p === RGFormat ) return gl.RG;
+		if ( p === RGIntegerFormat ) return gl.RG_INTEGER;
+
 		if ( p === RG8Format ) return gl.RG8;
+		if ( p === RG8UIFormat ) return gl.RG8UI;
 		if ( p === RG16FFormat ) return gl.RG16F;
 		if ( p === RG32FFormat ) return gl.RG32F;
 
 		if ( p === RGBFormat ) return gl.RGB;
+		if ( p === RGBIntegerFormat ) return gl.RGB_INTEGER;
+
 		if ( p === RGB8Format ) return gl.RGB8;
+		if ( p === RGB8UIFormat ) return gl.RGB8UI;
 		if ( p === RGB16FFormat ) return gl.RGB16F;
 		if ( p === RGB32FFormat ) return gl.RGB32F;
 
 		if ( p === RGBAFormat ) return gl.RGBA;
+		if ( p === RGBAIntegerFormat ) return gl.RGBA_INTEGER;
+
 		if ( p === RGBA8Format ) return gl.RGBA8;
+		if ( p === RGBA8UIFormat ) return gl.RGBA8UI;
 		if ( p === RGBA16FFormat ) return gl.RGBA16F;
 		if ( p === RGBA32FFormat ) return gl.RGBA32F;
 
