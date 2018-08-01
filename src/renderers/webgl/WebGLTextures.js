@@ -346,7 +346,7 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 					glFormat = utils.convert( texture.format ),
 					glType = utils.convert( texture.type ),
         	glInternalFormat = utils.convert( texture.internalFormat );
-		      if ( ! capabilities._isWebGL2 )
+		      if ( ! capabilities.isWebGL2 )
 			      glInternalFormat = glFormat;
 				//glInternalFormat = getInternalFormat( glFormat, glType );
 
