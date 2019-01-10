@@ -101,9 +101,12 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 	}
 
-	function getInternalFormat( glFormat, glType ) {
+	function getInternalFormat( internalFormat, glFormat, glType ) {
 
 		if ( ! capabilities.isWebGL2 ) return glFormat;
+
+		// The user provided an internal format, no need to apply deduction.
+		if ( internalFormat ) return utils.convert( internalFormat );
 
 		var internalFormat = glFormat;
 
@@ -357,8 +360,9 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 				var image = cubeImage[ 0 ],
 					isPowerOfTwoImage = isPowerOfTwo( image ),
 					glFormat = utils.convert( texture.format ),
+					internalFormat = texture.internalFormat,
 					glType = utils.convert( texture.type ),
-					glInternalFormat = getInternalFormat( glFormat, glType );
+					glInternalFormat = getInternalFormat( internalFormat, glFormat, glType );
 
 				setTextureParameters( _gl.TEXTURE_CUBE_MAP, texture, isPowerOfTwoImage );
 
@@ -541,8 +545,9 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 		var isPowerOfTwoImage = isPowerOfTwo( image ),
 			glFormat = utils.convert( texture.format ),
+			internalFormat = texture.internalFormat,
 			glType = utils.convert( texture.type ),
-			glInternalFormat = getInternalFormat( glFormat, glType );
+			glInternalFormat = getInternalFormat( internalFormat, glFormat, glType );
 
 		setTextureParameters( textureType, texture, isPowerOfTwoImage );
 
@@ -709,8 +714,9 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 	function setupFrameBufferTexture( framebuffer, renderTarget, attachment, textureTarget ) {
 
 		var glFormat = utils.convert( renderTarget.texture.format );
+		var internalFormat = renderTarget.texture.internalFormat;
 		var glType = utils.convert( renderTarget.texture.type );
-		var glInternalFormat = getInternalFormat( glFormat, glType );
+		var glInternalFormat = getInternalFormat( internalFormat, glFormat, glType );
 		state.texImage2D( textureTarget, 0, glInternalFormat, renderTarget.width, renderTarget.height, 0, glFormat, glType, null );
 		_gl.bindFramebuffer( _gl.FRAMEBUFFER, framebuffer );
 		_gl.framebufferTexture2D( _gl.FRAMEBUFFER, attachment, textureTarget, properties.get( renderTarget.texture ).__webglTexture, 0 );
@@ -759,8 +765,9 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 		} else {
 
 			var glFormat = utils.convert( renderTarget.texture.format );
+			var internalFormat = renderTarget.texture.internalFormat;
 			var glType = utils.convert( renderTarget.texture.type );
-			var glInternalFormat = getInternalFormat( glFormat, glType );
+			var glInternalFormat = getInternalFormat( internalFormat, glFormat, glType );
 
 			if ( isMultisample ) {
 
@@ -907,8 +914,9 @@ function WebGLTextures( _gl, extensions, state, properties, capabilities, utils,
 
 					_gl.bindRenderbuffer( _gl.RENDERBUFFER, renderTargetProperties.__webglColorRenderbuffer );
 					var glFormat = utils.convert( renderTarget.texture.format );
+					var internalFormat = renderTarget.texture.internalFormat;
 					var glType = utils.convert( renderTarget.texture.type );
-					var glInternalFormat = getInternalFormat( glFormat, glType );
+					var glInternalFormat = getInternalFormat( internalFormat, glFormat, glType );
 					var samples = getRenderTargetSamples( renderTarget );
 					_gl.renderbufferStorageMultisample( _gl.RENDERBUFFER, samples, glInternalFormat, renderTarget.width, renderTarget.height );
 
