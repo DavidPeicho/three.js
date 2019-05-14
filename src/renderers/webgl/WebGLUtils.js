@@ -51,72 +51,7 @@ function WebGLUtils( gl, extensions, capabilities ) {
 		if ( p === LuminanceAlphaFormat ) return gl.LUMINANCE_ALPHA;
 		if ( p === DepthFormat ) return gl.DEPTH_COMPONENT;
 		if ( p === DepthStencilFormat ) return gl.DEPTH_STENCIL;
-
 		if ( p === RedFormat ) return gl.RED;
-		if ( p === RedIntegerFormat ) return gl.RED_INTEGER;
-
-
-		if ( p === R8Format ) return gl.R8;
-		if ( p === R8_SNORMFormat ) return gl.R8_SNORM;
-		if ( p === R8IFormat ) return gl.R8I;
-		if ( p === R8UIFormat ) return gl.R8UI;
-		if ( p === R16IFormat ) return gl.R16I;
-		if ( p === R16UIFormat ) return gl.R16UI;
-		if ( p === R16FFormat ) return gl.R16F;
-		if ( p === R32IFormat ) return gl.R32I;
-		if ( p === R32UIFormat ) return gl.R32UI;
-		if ( p === R32FFormat ) return gl.R32F;
-
-		if ( p === RGFormat ) return gl.RG;
-		if ( p === RGIntegerFormat ) return gl.RG_INTEGER;
-
-		if ( p === RG8Format ) return gl.RG8;
-		if ( p === RG8_SNORMFormat ) return gl.RG8_SNORM;
-		if ( p === RG8IFormat ) return gl.RG8I;
-		if ( p === RG8UIFormat ) return gl.RG8UI;
-		if ( p === RG16IFormat ) return gl.RG16I;
-		if ( p === RG16UIFormat ) return gl.RG16UI;
-		if ( p === RG16FFormat ) return gl.RG16F;
-		if ( p === RG32IFormat ) return gl.RG32I;
-		if ( p === RG32UIFormat ) return gl.RG32UI;
-		if ( p === RG32FFormat ) return gl.RG32F;
-
-		if ( p === RGBFormat ) return gl.RGB;
-		if ( p === RGBIntegerFormat ) return gl.RGB_INTEGER;
-
-		if ( p === RGB565Format ) return gl.RGB565;
-		if ( p === RGB8Format ) return gl.RGB8;
-		if ( p === RGB8_SNORMFormat ) return gl.RGB8_SNORM;
-		if ( p === RGB8IFormat ) return gl.RGB8I;
-		if ( p === RGB8UIFormat ) return gl.RGB8UI;
-		if ( p === RGB9_E5Format ) return gl.RGB9_E5;
-		if ( p === RGB16IFormat ) return gl.RGB16I;
-		if ( p === RGB16UIFormat ) return gl.RGB16UI;
-		if ( p === RGB16FFormat ) return gl.RGB16F;
-		if ( p === RGB32IFormat ) return gl.RGB32I;
-		if ( p === RGB32UIFormat ) return gl.RGB32UI;
-		if ( p === RGB32FFormat ) return gl.RGB32F;
-		if ( p === SRGB8Format ) return gl.SRGB8;
-		if ( p === R11F_G11F_B10FFormat ) return gl.R11F_G11F_B10F;
-
-		if ( p === RGBAFormat ) return gl.RGBA;
-		if ( p === RGBAIntegerFormat ) return gl.RGBA_INTEGER;
-
-		if ( p === RGBA4Format ) return gl.RGBA4;
-		if ( p === RGBA8Format ) return gl.RGBA8;
-		if ( p === RGBA8_SNORMFormat ) return gl.RGBA8_SNORM;
-		if ( p === RGBA8IFormat ) return gl.RGBA8I;
-		if ( p === RGBA8UIFormat ) return gl.RGBA8UI;
-		if ( p === RGBA16IFormat ) return gl.RGBA16I;
-		if ( p === RGBA16UIFormat ) return gl.RGBA16UI;
-		if ( p === RGBA16FFormat ) return gl.RGBA16F;
-		if ( p === RGBA32IFormat ) return gl.RGBA32I;
-		if ( p === RGBA32UIFormat ) return gl.RGBA32UI;
-		if ( p === RGBA32FFormat ) return gl.RGBA32F;
-		if ( p === RGB5_A1Format ) return gl.RGB5_A1;
-		if ( p === RGB10_A2Format ) return gl.RGB10_A2;
-		if ( p === RGB10_A2UIFormat ) return gl.RGB10_A2UI;
-		if ( p === SRGB8_ALPHA8Format ) return gl.SRGB8_ALPHA8;
 
 		if ( p === AddEquation ) return gl.FUNC_ADD;
 		if ( p === SubtractEquation ) return gl.FUNC_SUBTRACT;
@@ -220,6 +155,63 @@ function WebGLUtils( gl, extensions, capabilities ) {
 			if ( extension !== null ) return extension.UNSIGNED_INT_24_8_WEBGL;
 
 		}
+
+		if ( p === RedIntegerFormat ) return gl.RED_INTEGER;
+		if ( p === R8Format ) return gl.R8;
+		if ( p === R8_SNORMFormat ) return gl.R8_SNORM;
+		if ( p === R8IFormat ) return gl.R8I;
+		if ( p === R8UIFormat ) return gl.R8UI;
+		if ( p === R16IFormat ) return gl.R16I;
+		if ( p === R16UIFormat ) return gl.R16UI;
+		if ( p === R16FFormat ) return gl.R16F;
+		if ( p === R32IFormat ) return gl.R32I;
+		if ( p === R32UIFormat ) return gl.R32UI;
+		if ( p === R32FFormat ) return gl.R32F;
+		if ( p === RGFormat ) return gl.RG;
+		if ( p === RGIntegerFormat ) return gl.RG_INTEGER;
+		if ( p === RG8Format ) return gl.RG8;
+		if ( p === RG8_SNORMFormat ) return gl.RG8_SNORM;
+		if ( p === RG8IFormat ) return gl.RG8I;
+		if ( p === RG8UIFormat ) return gl.RG8UI;
+		if ( p === RG16IFormat ) return gl.RG16I;
+		if ( p === RG16UIFormat ) return gl.RG16UI;
+		if ( p === RG16FFormat ) return gl.RG16F;
+		if ( p === RG32IFormat ) return gl.RG32I;
+		if ( p === RG32UIFormat ) return gl.RG32UI;
+		if ( p === RG32FFormat ) return gl.RG32F;
+		if ( p === RGBFormat ) return gl.RGB;
+		if ( p === RGBIntegerFormat ) return gl.RGB_INTEGER;
+		if ( p === RGB565Format ) return gl.RGB565;
+		if ( p === RGB8Format ) return gl.RGB8;
+		if ( p === RGB8_SNORMFormat ) return gl.RGB8_SNORM;
+		if ( p === RGB8IFormat ) return gl.RGB8I;
+		if ( p === RGB8UIFormat ) return gl.RGB8UI;
+		if ( p === RGB9_E5Format ) return gl.RGB9_E5;
+		if ( p === RGB16IFormat ) return gl.RGB16I;
+		if ( p === RGB16UIFormat ) return gl.RGB16UI;
+		if ( p === RGB16FFormat ) return gl.RGB16F;
+		if ( p === RGB32IFormat ) return gl.RGB32I;
+		if ( p === RGB32UIFormat ) return gl.RGB32UI;
+		if ( p === RGB32FFormat ) return gl.RGB32F;
+		if ( p === SRGB8Format ) return gl.SRGB8;
+		if ( p === R11F_G11F_B10FFormat ) return gl.R11F_G11F_B10F;
+		if ( p === RGBAFormat ) return gl.RGBA;
+		if ( p === RGBAIntegerFormat ) return gl.RGBA_INTEGER;
+		if ( p === RGBA4Format ) return gl.RGBA4;
+		if ( p === RGBA8Format ) return gl.RGBA8;
+		if ( p === RGBA8_SNORMFormat ) return gl.RGBA8_SNORM;
+		if ( p === RGBA8IFormat ) return gl.RGBA8I;
+		if ( p === RGBA8UIFormat ) return gl.RGBA8UI;
+		if ( p === RGBA16IFormat ) return gl.RGBA16I;
+		if ( p === RGBA16UIFormat ) return gl.RGBA16UI;
+		if ( p === RGBA16FFormat ) return gl.RGBA16F;
+		if ( p === RGBA32IFormat ) return gl.RGBA32I;
+		if ( p === RGBA32UIFormat ) return gl.RGBA32UI;
+		if ( p === RGBA32FFormat ) return gl.RGBA32F;
+		if ( p === RGB5_A1Format ) return gl.RGB5_A1;
+		if ( p === RGB10_A2Format ) return gl.RGB10_A2;
+		if ( p === RGB10_A2UIFormat ) return gl.RGB10_A2UI;
+		if ( p === SRGB8_ALPHA8Format ) return gl.SRGB8_ALPHA8;
 
 		return 0;
 
