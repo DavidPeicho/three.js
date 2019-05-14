@@ -486,17 +486,17 @@ function getSingularSetter( type ) {
 		case 0x8d66: // SAMPLER_EXTERNAL_OES
 		case 0x8dca: // INT_SAMPLER_2D
 		case 0x8dd2: // UNSIGNED_INT_SAMPLER_2D
-		return setValueT1;
+			return setValueT1;
 
 		case 0x8b5f: // SAMPLER_3D
 		case 0x8dcb: // INT_SAMPLER_3D
 		case 0x8dd3: // UNSIGNED_INT_SAMPLER_3D
-		return setValueT3D1;
+			return setValueT3D1;
 
 		case 0x8b60: // SAMPLER_CUBE
 		case 0x8dcc: // INT_SAMPLER_CUBE
 		case 0x8dd4: // UNSIGNED_SAMPLER_CUBE
-		return setValueT6;
+			return setValueT6;
 
 		case 0x1404: case 0x8b56: return setValue1i; // INT, BOOL
 		case 0x8b53: case 0x8b57: return setValue2iv; // _VEC2
