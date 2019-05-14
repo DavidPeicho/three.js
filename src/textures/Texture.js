@@ -45,7 +45,7 @@ function Texture( image, mapping, wrapS, wrapT, magFilter, minFilter, format, ty
 	this.anisotropy = anisotropy !== undefined ? anisotropy : 1;
 
 	this.format = format !== undefined ? format : RGBAFormat;
-	this.internalFormat = undefined;
+	this.internalFormat = null;
 	this.type = type !== undefined ? type : UnsignedByteType;
 
 	this.offset = new Vector2( 0, 0 );
