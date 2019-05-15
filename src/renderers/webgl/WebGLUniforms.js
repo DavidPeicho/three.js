@@ -480,7 +480,10 @@ function getSingularSetter( type ) {
 		case 0x8b5b: return setValue3fm; // _MAT3
 		case 0x8b5c: return setValue4fm; // _MAT4
 
-		case 0x8DC1: return setValueT2DArray1; // SAMPLER_2D_ARRAY
+		case 0x8DC1: // SAMPLER_2D_ARRAY
+		case 0x8dcf: // INT_SAMPLER_2D_ARRAY
+		case 0x8dd7: // UNSIGNED_INT_SAMPLER_2D_ARRAY
+			return setValueT2DArray1;
 
 		case 0x8b5e: // SAMPLER_2D
 		case 0x8d66: // SAMPLER_EXTERNAL_OES
@@ -638,6 +641,50 @@ function setValueT1a( gl, v, textures ) {
 
 }
 
+function setValueT2DArray1a( gl, v, renderer ) {
+
+	var cache = this.cache;
+	var n = v.length;
+
+	var units = allocTexUnits( renderer, n );
+
+	if ( arraysEqual( cache, units ) === false ) {
+
+		gl.uniform1iv( this.addr, units );
+		copyArray( cache, units );
+
+	}
+
+	for ( var i = 0; i !== n; ++ i ) {
+
+		renderer.setTexture2DArray( v[ i ] || emptyTexture2dArray, units[ i ] );
+
+	}
+
+}
+
+function setValueT3D1a( gl, v, renderer ) {
+
+	var cache = this.cache;
+	var n = v.length;
+
+	var units = allocTexUnits( renderer, n );
+
+	if ( arraysEqual( cache, units ) === false ) {
+
+		gl.uniform1iv( this.addr, units );
+		copyArray( cache, units );
+
+	}
+
+	for ( var i = 0; i !== n; ++ i ) {
+
+		renderer.setTexture3D( v[ i ] || emptyTexture3d, units[ i ] );
+
+	}
+
+}
+
 function setValueT6a( gl, v, textures ) {
 
 	var cache = this.cache;
@@ -675,8 +722,26 @@ function getPureArraySetter( type ) {
 		case 0x8b5b: return setValueM3a; // _MAT3
 		case 0x8b5c: return setValueM4a; // _MAT4
 
-		case 0x8b5e: return setValueT1a; // SAMPLER_2D
-		case 0x8b60: return setValueT6a; // SAMPLER_CUBE
+		case 0x8DC1: // SAMPLER_2D_ARRAY
+		case 0x8dcf: // INT_SAMPLER_2D_ARRAY
+		case 0x8dd7: // UNSIGNED_INT_SAMPLER_2D_ARRAY
+			return setValueT2DArray1a;
+
+		case 0x8b5e: // SAMPLER_2D
+		case 0x8d66: // SAMPLER_EXTERNAL_OES
+		case 0x8dca: // INT_SAMPLER_2D
+		case 0x8dd2: // UNSIGNED_INT_SAMPLER_2D
+			return setValueT1a;
+
+		case 0x8b5f: // SAMPLER_3D
+		case 0x8dcb: // INT_SAMPLER_3D
+		case 0x8dd3: // UNSIGNED_INT_SAMPLER_3D
+			return setValueT3D1a;
+
+		case 0x8b60: // SAMPLER_CUBE
+		case 0x8dcc: // INT_SAMPLER_CUBE
+		case 0x8dd4: // UNSIGNED_SAMPLER_CUBE
+			return setValueT6a;
 
 		case 0x1404: case 0x8b56: return setValue1iv; // INT, BOOL
 		case 0x8b53: case 0x8b57: return setValue2iv; // _VEC2
